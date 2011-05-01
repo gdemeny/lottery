@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<service id="remoting-service"
+	class="flex.messaging.services.RemotingService">
+
+	<adapters>
+		<adapter-definition id="java-object"
+			class="flex.messaging.services.remoting.adapters.JavaAdapter"/>
+		<adapter-definition id="cf-object" 
+			class="coldfusion.flash.messaging.ColdFusionAdapter" default="true"/>
+	</adapters>
+
+	<default-channels>
+		<channel ref="my-cfamf" />
+		<channel ref="my-amf" />
+	</default-channels>
+
+    <!-- Invoke Java class: example.HelloWorldService Java -->
+    <!--
+	<destination id="HelloWorldService">
+		<adapter ref="java-object"/>
+		<properties>
+			<source>example.HelloWorldService</source>
+			<scope>request</scope>
+		</properties>
+	</destination>
+	-->
+	
+	<!-- Invoke CFC: /example/HelloWorldService.cfc -->
+	<!--
+	<destination id="HelloWorldService">
+		<properties>
+			<source>example.HelloWorldService</source>
+			<scope>request</scope>
+		</properties>
+	</destination>
+	-->
+	
+	<destination id="ColdFusion">
+		<channels>
+		<channel ref="my-cfamf"/>
+		</channels>
+		<properties>
+		<source>*</source>
+		<!-- define the resolution rules and access level of the cfc being invoked -->
+		<access>
+		<!-- Use the ColdFusion mappings to find CFCs, by default only CFC files under your webroot can be found. -->
+		<use-mappings>false</use-mappings>
+		<!-- allow "public and remote" or just "remote" methods to be invoked -->
+		<method-access-level>remote</method-access-level>
+		</access>
+		
+		<property-case>
+		<!-- cfc property names -->
+		<force-cfc-lowercase>false</force-cfc-lowercase>
+		<!-- Query column names -->
+		<force-query-lowercase>false</force-query-lowercase>
+		<!-- struct keys -->
+		<force-struct-lowercase>false</force-struct-lowercase>
+		</property-case>
+		</properties>
+	</destination>
+</service>
